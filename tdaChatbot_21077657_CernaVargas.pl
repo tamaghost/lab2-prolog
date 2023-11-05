@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows,[ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
 
 getFlowChatbot(Chatbot, Flow):-
@@ -16,3 +17,10 @@ chatbotAddFlow(Chatbot1, Flow, Chatbot2) :-
     \+ member(Flow, ListFlow),
     append(ListFlow, [Flow], ListaModCF),
     setFlowChatbot(Chatbot1, ListaModCF, Chatbot2).
+=======
+<<<<<<< HEAD
+chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows,[ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
+=======
+chatbot(ChatbotID, Name, WelcomeMessage, StartFlowId, Flows,[ChatbotID, Name, WelcomeMessage, StartFlowId, Flows]).
+>>>>>>> origin/main
+>>>>>>> cf32b07ef837b4a31cb0a309e21361bd828ab0d6
