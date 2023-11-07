@@ -16,3 +16,15 @@ systemAddChatbot(System1, Chatbot, System2):-
     \+member(Chatbot,ListSystem),
     ListaModSC = [Chatbot|ListSystem],
     setSystemChatbot(System1,ListaModSC, System2).
+
+getUserSystem(System, User):-
+    chatbot(User,_,_,_,System).
+
+setSystemUser(System,NewUser,NewSystem):-
+    chatbot(_, NameS, InitialChatbotCodeLinkS, ChatbotS, System),
+    chatbot(NewUser, NameS, InitialChatbotCodeLinkS, ChatbotS, NewSystem).
+
+systemAddUser(System, User, NewSystem):-
+    getUserSystem(System, ListUsers)
+    \+member(User,ListUsers),
+    NewSystem = [User|System].
