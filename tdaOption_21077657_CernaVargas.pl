@@ -1,11 +1,26 @@
+%Dominio: num x string x num x num x list(string) x option
+%meta principal: option/6
 option(CodeOp, Mensaje, ChatbotCodeLink, InitialFlowCodeLink, Keyword,[CodeOp, Mensaje, ChatbotCodeLink, InitialFlowCodeLink, Keyword]).
 
+%Dominio: option x list(string)
+%meta principal: getMensajeOption/2
+getCodeOp([_, CodeOp, _, _, _], CodeOp).
+
+%Dominio: option x list(string)
+%meta principal: getMensajeOption/2
 getMensajeOption([_, Mensaje, _, _, _], Mensaje).
 
-getKeywordOption(Option, ListKeywords) :-
-    option(_,_,_,_,ListKeywords, Option).
+%Dominio: option x list(string)
+%meta principal: getKeywordOption/2
+getKeywordOption([_, _, _, _, ListKeywords], ListKeywords).
 
-listaMensajeOption([], []).  % Caso base: lista vacía
-listaMensajeOption([Opcion|Resto], [Mensaje|RestoMensajes]) :-
-    getMensajeOption(Opcion, Mensaje),  % Obtener el mensaje de la opción
-    listaMensajeOption(Resto, RestoMensajes).  % Llamada recursiva para el resto de las opciones
+%Dominio: option x num
+%meta principal: getChatbotCodeLinkOption/2
+getChatbotCodeLinkOption([_, _, ChatbotCodeLink, _, _], ChatbotCodeLink).
+
+%Dominio: option x list
+%meta principal: getInitialFlowCodeLinkOption/2
+getInitialFlowCodeLinkOption([_, _, _, InitialFlowCodeLink, _], InitialFlowCodeLink).
+
+
+
