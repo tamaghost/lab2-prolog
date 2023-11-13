@@ -4,10 +4,6 @@ option(CodeOp, Mensaje, ChatbotCodeLink, InitialFlowCodeLink, Keyword,[CodeOp, M
 
 %Dominio: option x list(string)
 %meta principal: getMensajeOption/2
-getCodeOp([_, CodeOp, _, _, _], CodeOp).
-
-%Dominio: option x list(string)
-%meta principal: getMensajeOption/2
 getMensajeOption([_, Mensaje, _, _, _], Mensaje).
 
 %Dominio: option x list(string)

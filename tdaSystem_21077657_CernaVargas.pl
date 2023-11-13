@@ -1,65 +1,103 @@
-system(Users, Name, InitialChatbotCodeLink, Chatbot, ChatHistory, [Users, Name, InitialChatbotCodeLink, Chatbot, ChatHistory]).
+%Dominio: list(user) x string x num x list(chatbot) x system
+%meta principal: system/5
+%meta secundaria: list_to_set/2
+system(Users, Name, InitialChatbotCodeLink, Chatbot, [Users, Name, InitialChatbotCodeLink, SinDuplicados]):-
+    list_to_set(Chatbot, SinDuplicados).
 
-getUserSystem(System, User):-
-    system(User,_,_,_,_,System).
+%Dominio: system x list(user)
+%meta principal: getUserSystem/2
+getUserSystem([User,_,_,_], User).
 
-setSystemUser(System,NewUser,NewSystem):-
-    system(_, NameS, InitialChatbotCodeLinkS, ChatbotS, ChatHistoryS, System),
-    system(NewUser, NameS, InitialChatbotCodeLinkS, ChatbotS, ChatHistoryS, NewSystem).
+%Dominio: system x string
+%meta principal: getNameSystem/2
+getNameSystem([_,Name,_,_], Name).
 
-/*...*/
+%Dominio: system x num
+%meta principal: getChatbotCodeLinkSystem/2
+getChatbotCodeLinkSystem([_,_,ChatbotCode,_], ChatbotCode).
 
-getChatbotSystem(System, Chatbot):-
-    system(_,_,_,Chatbot,_,System).
+%Dominio: system x list(chatbot)
+%meta principal: getChatbotSystem/2
+getChatbotSystem([_,_,_,Chatbot], Chatbot).
 
+%Dominio: system x chatbot x system
+%meta principal: setChatbotSystem/3
+%meta secundaria: getUserSystem/2, getNameSystem/2, getChatbotCodeLinkSystem/2, system/5
 setChatbotSystem(System,NewChatbot,NewSystem):-
-    system(UsersS, NameS, InitialChatbotCodeLinkS,_, ChatHistoryS, System),
-    system(UsersS, NameS, InitialChatbotCodeLinkS, NewChatbot, ChatHistoryS, NewSystem).
+    getUserSystem(System, User),
+    getNameSystem(System, Name),
+    getChatbotCodeLinkSystem(System, ChatbotCode),
+    system(User, Name, ChatbotCode, NewChatbot, NewSystem).
 
-getChatHistorySystem(System, Chat):-
-    system(_,_,_,_,Chat,System).
+%Dominio: system x user x system
+%meta principal: setSystemUser/3
+%meta secundaria: getNameSystem/2, getChatbotCodeLinkSystem/2, getChatbotSystem/2, system/5
+setSystemUser(System,NewUser,NewSystem):-
+    getNameSystem(System, Name),
+    getChatbotCodeLinkSystem(System, ChatbotCode),
+    getChatbotSystem(System, Chatbot),
+    system(NewUser, Name, ChatbotCode, Chatbot, NewSystem).
 
-setChatHistorySystem(System,NewChat,NewSystem):-
-    system(UsersS, NameS, InitialChatbotCodeLinkS, Chatbot, _, System),
-    system(UsersS, NameS, InitialChatbotCodeLinkS, Chatbot, NewChat, NewSystem).
-    
-%funciona
-systemAddChatbot(System1, Chatbot, System2):-
+systemAddChatbot(System1, Chatbot, _):-
     getChatbotSystem(System1,ListSystem),
     member(Chatbot,ListSystem),
-    System2 = System1.
+    false.
 systemAddChatbot(System1, Chatbot, System2):-
     getChatbotSystem(System1,ListSystem),
     \+member(Chatbot,ListSystem),
     ListaModSC = [Chatbot|ListSystem],
-    setSystemChatbot(System1,ListaModSC, System2).
+    setChatbotSystem(System1,ListaModSC, System2).
 
-
-%funciona
+%Dominio: system x list(user) x system
+%meta principal: systemAddUser/3
+%meta secundaria: getUserSystem/2, member/2
+systemAddUser(System, User, _):-
+    getUserSystem(System, ListUsers),
+    member(User,ListUsers),
+    false.
+%Dominio: system x list(user) x system
+%meta principal: systemAddUser/3
+%meta secundaria: getUserSystem/2, member/2, append/3, setSystemUser/3
 systemAddUser(System, User, NewSystem):-
     getUserSystem(System, ListUsers),
     \+member(User,ListUsers),
-    NewSystem = [User|System].
-%funciona
-systemLogin(System, User, SystemLogin):-
+    append(ListUsers, [User], ListU),
+    setSystemUser(System,ListU,NewSystem).
+
+%Dominio: system x list(user) x system
+%meta principal: systemLogin/3
+%meta secundaria: getUserSystem/2, member/2
+systemLogin(System, User, _):-
     getUserSystem(System, ListUsers),
     \+member(User,ListUsers),
-    write("no es posible iniciar secion").
+    false.
+%Dominio: system x list(user) x system
+%meta principal: systemLogin/3
+%meta secundaria: systemaLogueado/1, getUserSystem/2, member/2, setSystemUser/3
 systemLogin(System, User, SystemLogin):-
+    \+systemaLogueado(System),
     getUserSystem(System, ListUsers),
     member(User,ListUsers),
-    NewListUsers = [User|ListUsers],
-    setSystemUser(System, NewListUsers, SystemLogin).
+    setSystemUser(System, [User|ListUsers], SystemLogin).
 
-%funciona pero no se que tan util sea
+%caso base
 contarUsuario(_, [], 0).
+%Dominio: user x list(user) x num
+%meta principal: contarUsuario/3
+%meta secundaria: contarUsuario/3
 contarUsuario(User, [User|Resto], Resultado) :-
     contarUsuario(User, Resto, ResultadoAnterior),
     Resultado is ResultadoAnterior + 1.
+%Dominio: user x list(user) x num
+%meta principal: contarUsuario/3
+%meta secundaria: contarUsuario/3
 contarUsuario(User, [_|Resto], Resultado) :-
     contarUsuario(User, Resto, Resultado).
-%funciona pero no se que tan util sea
-esSystemaLogin(System) :-
-    getUserSystem(System, ListUsers), % Asegúrate de que getUserSystem esté definido y funcione correctamente
-    contarUsuario(_, ListUsers, Resultado), % Busca cualquier usuario en la lista
-    Resultado == 2. % Verifica si se encontró al menos uno
+
+%Dominio: system
+%meta principal: systemaLogueado/1
+%meta secundaria: getUserSystem/2, contarUsuario/3
+systemaLogueado(System) :-
+    getUserSystem(System, ListUsers),
+    contarUsuario(_, ListUsers, Resultado), 
+    Resultado == 2.
