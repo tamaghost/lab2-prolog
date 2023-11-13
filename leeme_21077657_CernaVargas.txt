@@ -1,0 +1,11 @@
+//instrucciones de us
+Se deben descargar los archivos del repositorio, abrir la consola de Prolog y realizar consult para cada archivo con la dirección del archivo, en total deben existir 6 consult, uno por cada TDA. A modo ejemplo:
+
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaOption_21077657_CernaVargas.pl').
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaFlow_21077657_CernaVargas.pl').
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaChatbot_21077657_CernaVargas.pl').
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaSystem_21077657_CernaVargas.pl').
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaUser_21077657_CernaVargas.pl').
+consult('C:/Users/Tamara/OneDrive/Escritorio/Laboratorios Paradigmas/Lab Prolog/codigo fuente/tdaChatHistory_21077657_CernaVargas.pl').
+
+dentro del archivo prueba .pl existen 2 script de prueba, el primero entregado en catedra y el segundo diseñado a modo ejemplo. Ya realizado los consult, al lado del signo ? se debe pegar el primer script de prueba, confirmada su ejecución, se pegara el siguiente script de prueba a continuación del mismo signo. 
